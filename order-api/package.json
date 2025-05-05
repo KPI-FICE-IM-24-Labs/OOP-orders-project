@@ -1,10 +1,10 @@
 {
-  "name": "nest-template",
+  "name": "order-api",
   "version": "0.0.1",
   "description": "",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "fmt": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,7 +20,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "husky"
+    "prepare": "cd .. && husky order-api/.husky"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

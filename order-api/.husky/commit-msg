@@ -1,1 +1,2 @@
+cd order-api
 npx --no-install commitlint --edit "$1"

@@ -1,2 +1,3 @@
+cd order-api
 yarn fmt:check
 yarn lint

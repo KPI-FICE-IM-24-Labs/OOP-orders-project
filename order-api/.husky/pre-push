@@ -1,1 +1,2 @@
+cd order-api
 yarn test
