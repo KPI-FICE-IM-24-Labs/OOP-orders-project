@@ -25,8 +25,10 @@ async function bootstrap() {
   );
   app.enableCors();
   app.use(helmet());
+  app.setGlobalPrefix('/api');
   app.enableVersioning({
     type: VersioningType.URI,
+    prefix: 'v',
   });
 
   await app.listen(PORT, HOST, () => {

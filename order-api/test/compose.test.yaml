@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: testdb
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata_test:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ..
+      dockerfile: test/Dockerfile
+    working_dir: /app
+    environment:
+      NODE_ENV: test
+      JWT_SECRET_KEY: secret
+      JWT_EXPIRATION: 1h
+    depends_on:
+      - postgres
+    env_file:
+      - .env.test
+    command: pnpm run test
+
+volumes:
+  pgdata_test:

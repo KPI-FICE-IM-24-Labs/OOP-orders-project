@@ -15,6 +15,7 @@ FROM node:${NODE_VERSION}-alpine as base
 # Set working directory for all build stages.
 WORKDIR /usr/src/app
 
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 ################################################################################
 # Create a stage for installing production dependecies.
@@ -25,7 +26,7 @@ FROM base AS deps
 # Leverage bind mounts to package.json and yarn.lock to avoid having to copy them
 # into this layer.
 COPY package.json yarn.lock ./
-RUN yarn install --production
+RUN pnpm install --production
 
 ################################################################################
 # Create a stage for building the application.
@@ -34,12 +35,12 @@ FROM deps AS build
 # Download additional development dependencies before building, as some projects require
 # "devDependencies" to be installed to build. If you don't need this, remove this step.
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN pnpm install
 
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
-RUN yarn run build
+RUN pnmp run build
 
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies
@@ -59,7 +60,7 @@ COPY package.json .
 # the built application from the build stage into the image.
 COPY --from=deps /usr/src/app/node_modules ./node_modules
 COPY --from=build /usr/src/app/dist ./dist
-COPY .production.env ./
+COPY .env ./
 
 
 
@@ -67,4 +68,4 @@ COPY .production.env ./
 EXPOSE 9180
 
 # Run the application.
-CMD yarn start:prod
+CMD pnmp start:prod

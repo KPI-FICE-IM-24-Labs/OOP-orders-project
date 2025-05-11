@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
+import { AuthModule } from './auth/auth.module';
+import { DatabaseModule } from './database/database.module';
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,6 +27,8 @@ import { LoggerModule } from 'nestjs-pino';
         },
       },
     }),
+    AuthModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
