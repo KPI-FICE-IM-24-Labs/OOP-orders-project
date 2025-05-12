@@ -40,7 +40,7 @@ RUN pnpm install
 # Copy the rest of the source files into the image.
 COPY . .
 # Run the build script.
-RUN pnmp run build
+RUN pnpm run build
 
 ################################################################################
 # Create a new stage to run the application with minimal runtime dependencies
@@ -68,4 +68,4 @@ COPY .env ./
 EXPOSE 9180
 
 # Run the application.
-CMD pnmp start:prod
+CMD pnpm start:prod
