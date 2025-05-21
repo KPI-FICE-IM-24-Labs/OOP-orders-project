@@ -18,6 +18,6 @@ export class OrderItemDto implements IOrderItem {
 
   @IsNumber()
   @IsNotEmpty()
-  @Min(1)
+  @Min(0)
   unitPrice!: number;
 }
