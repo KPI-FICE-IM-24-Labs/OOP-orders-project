@@ -6,6 +6,7 @@ import * as Joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Global()
 @Module({
@@ -29,6 +30,7 @@ import { DatabaseModule } from './database/database.module';
     }),
     AuthModule,
     DatabaseModule,
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
