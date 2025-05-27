@@ -3,6 +3,8 @@ import {
   IsArray,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -15,6 +17,10 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsEnum(PaymentMethod)
   paymentMethod!: PaymentMethod;
+
+  @IsNumber()
+  @IsOptional()
+  paymentBalance: number = 0;
 
   @IsArray()
   @ArrayNotEmpty()
