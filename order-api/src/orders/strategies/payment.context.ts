@@ -1,17 +1,13 @@
+import { Injectable } from '@nestjs/common';
 import { PaymentStrategy } from './payment-strategy.interface';
+import { UserDto } from '../../auth/dto/user.dto';
+import { Order } from '../entities/order.entity';
 
+@Injectable()
 export class PaymentContext {
-  private strategy: PaymentStrategy;
+  constructor(private readonly strategy: PaymentStrategy) {}
 
-  constructor(strategy: PaymentStrategy) {
-    this.strategy = strategy;
-  }
-
-  public setStrategy(strategy: PaymentStrategy): void {
-    this.strategy = strategy;
-  }
-
-  public executePayment(amount: number): string {
-    return this.strategy.pay(amount);
+  execute(user: UserDto, order: Order): boolean {
+    return this.strategy.canPay(user, order);
   }
 }
