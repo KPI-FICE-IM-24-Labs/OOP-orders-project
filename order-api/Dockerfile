@@ -18,14 +18,14 @@ WORKDIR /usr/src/app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 ################################################################################
-# Create a stage for installing production dependecies.
+# Create a stage for installing production dependencies.
 FROM base AS deps
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.yarn to speed up subsequent builds.
 # Leverage bind mounts to package.json and yarn.lock to avoid having to copy them
 # into this layer.
-COPY package.json yarn.lock ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --production
 
 ################################################################################
