@@ -1,17 +1,10 @@
 import { Module } from '@nestjs/common';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
-import { OrderFactory } from '../factories/order.factory';
-import { PaymentContext } from './strategies/payment.context';
-import { PaypalStrategy } from './strategies/paypal.strategy';
+import { OrderFactory } from './order.factory';
 
 @Module({
   controllers: [OrdersController],
-  providers: [
-    OrdersService,
-    OrderFactory,
-    PaymentContext,
-    PaypalStrategy,
-  ],
+  providers: [OrdersService, OrderFactory],
 })
 export class OrdersModule {}

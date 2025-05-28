@@ -18,8 +18,8 @@ export class CreateOrderDto {
   @IsEnum(PaymentMethod)
   paymentMethod!: PaymentMethod;
 
-  @IsNumber()
   @IsOptional()
+  @IsNumber()
   paymentBalance: number = 0;
 
   @IsArray()

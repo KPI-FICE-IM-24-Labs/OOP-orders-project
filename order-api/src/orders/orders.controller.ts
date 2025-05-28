@@ -20,7 +20,7 @@ export class OrdersController {
   @HttpCode(HttpStatus.CREATED)
   public async createOrder(
     @Body() dto: CreateOrderDto,
-    @CurrentUser('id') userId: string,
+    @CurrentUser('sub') userId: string,
   ) {
     return await this.service.createOrder(dto, userId);
   }

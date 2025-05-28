@@ -1,11 +1,11 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import e from 'express';
-import { UserDto } from '../dto/user.dto';
+import { IPayload } from '../IPayload';
 
 export const CurrentUser = createParamDecorator(
-  (data: keyof UserDto, context: ExecutionContext) => {
+  (data: keyof IPayload, context: ExecutionContext) => {
     const request: e.Request = context.switchToHttp().getRequest();
-    const user: UserDto = request.user as UserDto;
+    const user: IPayload = request.user as IPayload;
     return data ? user[data] : user;
   },
 );
