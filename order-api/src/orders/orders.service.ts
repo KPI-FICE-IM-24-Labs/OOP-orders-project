@@ -7,12 +7,15 @@ import { CreditCardStrategy } from './strategies/credit-card.strategy';
 import { PayPalStrategy } from './strategies/payPalStrategy';
 import { PaymentContext } from './strategies/payment.context';
 import { OrderStatus } from './enums/order-status.enum';
+import { ProcessOrderCommand } from './process-order.command';
 
 @Injectable()
 export class OrdersService {
-  constructor(private readonly ordersFactory: OrderFactory) {}
+  constructor(
+    private readonly ordersFactory: OrderFactory,
+    private readonly processOrderCommand: ProcessOrderCommand,
+  ) {}
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   public async createOrder(dto: CreateOrderDto, userId: string) {
     const order = this.ordersFactory.create({ items: dto.items, userId });
     const paymentStrategy = this.resolveStrategy(dto.paymentMethod);
@@ -29,7 +32,7 @@ export class OrdersService {
     }
 
     order.setStatus(OrderStatus.CONFIRMED);
-    return order;
+    return await this.processOrderCommand.execute(order);
   }
 
   private resolveStrategy(paymentMethod: PaymentMethod) {

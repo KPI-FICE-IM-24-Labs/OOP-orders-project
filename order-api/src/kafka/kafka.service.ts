@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Kafka, Producer } from 'kafkajs';
 import { ConfigService } from '@nestjs/config';
+import { KafkaPayload } from '../types/kafka.payload';
 
 @Injectable()
 export class KafkaService implements OnModuleInit {
@@ -19,7 +20,7 @@ export class KafkaService implements OnModuleInit {
     await this.producer.connect();
   }
 
-  public async send(topic: string, message: any) {
+  public async send(topic: string, message: KafkaPayload) {
     await this.producer?.send({
       topic,
       messages: [{ value: JSON.stringify(message) }],
