@@ -7,6 +7,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { OrdersModule } from './orders/orders.module';
+import { KafkaModule } from './kafka/kafka.module';
 
 @Global()
 @Module({
@@ -31,6 +32,7 @@ import { OrdersModule } from './orders/orders.module';
     AuthModule,
     DatabaseModule,
     OrdersModule,
+    KafkaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
