@@ -1,11 +1,14 @@
 package com.quickorder.model;
 
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
     private UUID id;
     private String userId;
