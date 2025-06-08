@@ -1,49 +1,35 @@
 package com.quickorder.service;
 
-import com.quickorder.builder.OrderBuilder;
-import com.quickorder.model.Order;
+import com.quickorder.model.OrderRequest;
+import com.quickorder.model.builder.OrderBuilder;
 import com.quickorder.repository.OrderRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final KafkaProducerService kafkaProducerService;
 
-    @Autowired
-    public OrderService(OrderRepository orderRepository, KafkaProducerService kafkaProducerService) {
+    public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
-        this.kafkaProducerService = kafkaProducerService;
     }
 
-    // Command pattern — виконання команди "створити замовлення"
-    public Order createOrder(Order orderRequest) {
-        Order order = new OrderBuilder()
-                .withId(UUID.randomUUID())
-                .withUserId(orderRequest.getUserId())
-                .withProduct(orderRequest.getProduct())
-                .withQuantity(orderRequest.getQuantity())
-                .withPrice(orderRequest.getPrice())
-                .withStatus("PENDING")
-                .withCreatedAt(LocalDateTime.now())
-                .build();
+    public String createOrder(OrderRequest orderRequest) {
+        var orders = orderRequest.items().stream().map(item -> {
+            return new OrderBuilder()
+                    .orderId(UUID.fromString(orderRequest.orderId()))
+                    .userId(UUID.fromString(orderRequest.userId()))
+                    .product(item.productId())
+                    .quantity(item.quantity())
+                    .price(item.unitPrice())
+                    .createdAt(orderRequest.timestamp())
+                    .build();
+        }).toList();
 
-        orderRepository.save(order);
+        orderRepository.saveAll(orders);
 
-        // Відправка події в Kafka
-        kafkaProducerService.sendOrderCreatedEvent(order);
-
-        return order;
-    }
-
-    public Order getOrderById(UUID id) {
-        Optional<Order> optionalOrder = orderRepository.findById(id);
-        return optionalOrder.orElse(null);
+        return orderRequest.orderId();
     }
 }
